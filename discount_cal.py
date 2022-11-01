@@ -1,4 +1,4 @@
-
+import sqlite3
 from tkinter import *
 from tkinter import messagebox
 import datetime as dt
@@ -36,9 +36,19 @@ def myCalculation():
     DiscPrice.set(str(v4))
 
 def submit():
-    if sales_manID_entry.get()=='' or  orginal_sale_entr.get() == '' or wideDisc_Entry.get() == '' or TotalDis_Entry.get() == '' or DiscountPrice_Entry.get() == '':
+    if sales_manID_entry.get()=='' or  orginal_sale_entr.get() == '' :
         messagebox.showerror( 'Error', 'Invalid Data' )
     else:
+        conn= sqlite3.connect('abcompany.db')
+        curr = conn.cursor()
+        curr.execute(""" CREATE TABLE IF NOT EXISTS salesinfo(
+            empid TEXT NOT NULL,
+            orgi_price TEXT NOT NULL,
+            wide_disc TEXT NOT NULL,
+            over2000_amt TEXT NOT NULL,
+            total_amt TEXT NOT NULL 
+            disc_price TEXT NOT NULL 
+        )""")
         messagebox.showinfo('','Good job')
 def idelete():
         pass
@@ -62,7 +72,7 @@ totalDisAmt= StringVar()
 DiscPrice = StringVar()
 
 date = dt.datetime.now()
-date_lbl = Label(root, text=f"{date:%A, %B %d, %Y}", font=('Calibri',12))
+date_lbl = Label(root, text=f"{date:%A %B %d, %Y}", font=('Calibri',12))
 date_lbl.place(relx=0.5,rely=0.08,anchor='center')
 
 sales_manID =Label(root,text='Sales Man ID :', font=('Cambria',20,'bold'),fg='black')
