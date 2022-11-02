@@ -39,17 +39,30 @@ def submit():
     if sales_manID_entry.get()=='' or  orginal_sale_entr.get() == '' :
         messagebox.showerror( 'Error', 'Invalid Data' )
     else:
+
         try:
             conn= sqlite3.connect('abcompany.db')
             curr = conn.cursor()
             curr.execute(""" CREATE TABLE IF NOT EXISTS salesinfo(
-                empid TEXT NOT NULL,
+                prod_id TEXT PRIMARY NOT NULL,
+                emp_id TEXT NOT NULL,
                 orgi_price TEXT NOT NULL,
                 wide_disc TEXT NOT NULL,
                 over2000_amt TEXT NOT NULL,
                 total_amt TEXT NOT NULL,
                 disc_price TEXT NOT NULL 
                 )""")
+            curr.execute( "INSERT INTO salesinfo VALUES(:prod_id,:emp_id,:orgi_price,:wide_disc,:over2000_amt,:total_amt,:disc_price)",
+                             {'prod_id': prod_code_entry.get(),
+                              'emp_id': employe_id_entry.get(),
+                              'orgi_price': orginal_sale_entr.get(),
+                              'over2000_amt': Over200_Entry.get(),
+                              'total_amt': TotalDis_Entry.get(),
+                              'disc_price': DiscountPrice_Entry.get()
+                              } )
+            messagebox.showinfo('Success','All data added successfully')
+            conn.commit()
+            conn.close()
         except:
             messagebox.showerror( 'Error', 'Something went wrong' )
 
@@ -79,20 +92,25 @@ date = dt.datetime.now()
 date_lbl = Label(root, text=f"{date:%A %B %d, %Y}", font=('Calibri',12))
 date_lbl.place(relx=0.5,rely=0.08,anchor='center')
 
-sales_manID =Label(root,text='Sales Man ID :', font=('Cambria',20,'bold'),fg='black')
-sales_manID.place(x=150,y=150)
-sales_manID_entry = Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',20))
-sales_manID_entry.place(x=300,y=150,width=150,height=40)
+employe_id =Label(root,text='Emp ID :', font=('Cambria',16,'bold'),fg='black')
+employe_id.place(x=100,y=150)
+employe_id_entry = Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',16))
+employe_id_entry.place(x=200,y=150,width=150,height=30)
 
-search_btn =Button(root,text='', font=('Cambria',20),fg='black',bd=3)
-search_btn.place(x=580,y=150,width=50,height=35)
-search_entry =Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',20))
-search_entry.place(x=480,y=150,width=100,height=35)
+prod_lbl =Label(root,text='Product code', font=('Cambria',16,'bold'),fg='black')
+prod_lbl.place(x=400,y=200)
+prod_code_entry = Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',16))
+prod_code_entry.place(x=550,y=200,width=100,height=30)
 
-orginal_sale_lbl =Label(root,text='Original Sale Price $:', font=('Cambria',20,'bold'),fg='black')
-orginal_sale_lbl.place(x=100,y=200)
-orginal_sale_entr = Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',20),textvariable=OrgPrice)
-orginal_sale_entr.place(x=300,y=200,width=320,height=35)
+search_btn =Button(root,text='Search', font=('Cambria',16),fg='black',bd=3)
+search_btn.place(x=500,y=150,width=100,height=30)
+search_entry =Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',16))
+search_entry.place(x=400,y=150,width=100,height=30)
+
+orginal_sale_lbl =Label(root,text='Original Sale Price $:', font=('Cambria',16,'bold'),fg='black')
+orginal_sale_lbl.place(x=50,y=200)
+orginal_sale_entr = Entry(root,bg='light grey',bd=3,fg='blue',font=('Cambria',16),textvariable=OrgPrice)
+orginal_sale_entr.place(x=220,y=200,width=150,height=30)
 
 Refresh_btn =Button(root,text='Refresh',font=('Cambria',18),fg='blue',command=refresh)
 Refresh_btn.place(x=320,y=250,width=80,height=35)
