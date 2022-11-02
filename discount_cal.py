@@ -39,16 +39,20 @@ def submit():
     if sales_manID_entry.get()=='' or  orginal_sale_entr.get() == '' :
         messagebox.showerror( 'Error', 'Invalid Data' )
     else:
-        conn= sqlite3.connect('abcompany.db')
-        curr = conn.cursor()
-        curr.execute(""" CREATE TABLE IF NOT EXISTS salesinfo(
-            empid TEXT NOT NULL,
-            orgi_price TEXT NOT NULL,
-            wide_disc TEXT NOT NULL,
-            over2000_amt TEXT NOT NULL,
-            total_amt TEXT NOT NULL 
-            disc_price TEXT NOT NULL 
-        )""")
+        try:
+            conn= sqlite3.connect('abcompany.db')
+            curr = conn.cursor()
+            curr.execute(""" CREATE TABLE IF NOT EXISTS salesinfo(
+                empid TEXT NOT NULL,
+                orgi_price TEXT NOT NULL,
+                wide_disc TEXT NOT NULL,
+                over2000_amt TEXT NOT NULL,
+                total_amt TEXT NOT NULL,
+                disc_price TEXT NOT NULL 
+                )""")
+        except:
+            messagebox.showerror( 'Error', 'Something went wrong' )
+
         messagebox.showinfo('','Good job')
 def idelete():
         pass
