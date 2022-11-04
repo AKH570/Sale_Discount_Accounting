@@ -9,23 +9,7 @@ root.title('Daily Sales Accounting')
 
 head_lbl = Label(root,text='Company Discount Sales Calculations',font=('Microsoft Himalaya',24,'bold','italic'),fg='#FF00BF')
 head_lbl.place(relx=0.5,rely=0.03,anchor='center')
-'''
-try:
-    conn= sqlite3.connect('abcompany.db')
-    curr = conn.cursor()
-    curr.execute(""" CREATE TABLE IF NOT EXISTS salesinfo(
-                prod_id TEXT PRIMARY KEY,
-                emp_id TEXT NOT NULL,
-                orgi_price TEXT NOT NULL,
-                wide_disc TEXT,
-                over2000_amt TEXT NOT NULL,
-                total_amt TEXT NOT NULL,
-                disc_price TEXT NOT NULL
-                )""")
-    conn.commit()
-except Exception as e:
-    print(e)
-'''
+
 def check():
     if employe_id_entry.get()=='' or  orginal_sale_entr.get() == '' or prod_code_entry.get()=='':
         messagebox.showerror( 'Error', 'Required field is empty' )
